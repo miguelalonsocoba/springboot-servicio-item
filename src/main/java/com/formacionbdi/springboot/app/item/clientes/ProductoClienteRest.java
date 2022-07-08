@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.formacionbdi.springboot.app.item.models.Producto;
 
-@FeignClient(name = "servicio-productos", url = "localhost:8001") // Se define que la interfaz es un cliente Feign.
+@FeignClient(name = "servicio-productos") // Se define que la interfaz es un cliente Feign.
 public interface ProductoClienteRest {
 	
 	@GetMapping("/listar")
