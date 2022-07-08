@@ -14,7 +14,7 @@ import com.formacionbdi.springboot.app.item.models.Item;
 import com.formacionbdi.springboot.app.item.models.Producto;
 import com.formacionbdi.springboot.app.item.models.service.IItemService;
 
-@Service
+@Service(value = "seviceRestTemplate")
 public class ItemServiceImpl implements IItemService {
 
 	@Autowired
