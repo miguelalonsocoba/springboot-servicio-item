@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formacionbdi.springboot.app.item.models.Item;
+import com.formacionbdi.springboot.app.item.models.Producto;
 import com.formacionbdi.springboot.app.item.models.service.IItemService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 public class ItemController {
@@ -23,9 +25,28 @@ public class ItemController {
 		return itemService.findAll();
 	}
 
+	@HystrixCommand(fallbackMethod = "metodoAlternativo") // Manejo de tolerancia a fallor, en caso de error se ejecuta
+															// el metodo que se
+	// especifica (CircuitBreaker).
 	@GetMapping(value = "/ver/{id}/cantidad/{cantidad}")
 	public Item detalle(@PathVariable Long id, @PathVariable Integer cantidad) {
 		return itemService.findById(id, cantidad);
+	}
+
+	/*
+	 * Camino alternativo en caso de falla del metodo detalla() y para evitar
+	 * errores en cascada.
+	 */
+	public Item metodoAlternativo(Long id, Integer cantidad) {
+		Item item = new Item();
+		Producto producto = new Producto();
+
+		item.setCantidad(cantidad);
+		producto.setId(id);
+		producto.setNombre("Camara Sony");
+		producto.setPrecio(500.00);
+		item.setProducto(producto);
+		return item;
 	}
 
 }
