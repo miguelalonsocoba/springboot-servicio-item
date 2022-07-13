@@ -25,9 +25,11 @@ public class ItemController {
 		return itemService.findAll();
 	}
 
-	@HystrixCommand(fallbackMethod = "metodoAlternativo") // Manejo de tolerancia a fallor, en caso de error se ejecuta
-															// el metodo que se
-	// especifica (CircuitBreaker).
+	/*
+	 * Manejo de tolerancia a fallor, en caso de error se ejecuta el metodo que se
+	 * especifica (CircuitBreaker).
+	 */
+	@HystrixCommand(fallbackMethod = "metodoAlternativo")
 	@GetMapping(value = "/ver/{id}/cantidad/{cantidad}")
 	public Item detalle(@PathVariable Long id, @PathVariable Integer cantidad) {
 		return itemService.findById(id, cantidad);
